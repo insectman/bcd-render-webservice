@@ -1,4 +1,4 @@
-py7zr = "^0.22.0"
-python-barcode = "^0.15.1"
-IMAPClient = "^3.0.1"
-python-dotenv = "^1.0.1"
+py7zr==0.22.0
+python-barcode==0.15.1
+IMAPClient==3.0.1
+python-dotenv==1.0.1
