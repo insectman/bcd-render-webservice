@@ -111,9 +111,15 @@ def process_mail():
         return "Number of messages: %d" % len(response.items())
 
 
+print('1111111111111111111111111111')
+
 @app.route('/')
 def handler():
+    print('route handler')
     return "123"
+
+
+print('222222222222222222222222222222')
 
 while True:
     process_mail()
