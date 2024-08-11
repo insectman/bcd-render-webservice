@@ -9,12 +9,12 @@ from imapclient import IMAPClient
 from barcode import EAN13
 from barcode.writer import SVGWriter
 import py7zr
-# from flask import Flask
+from flask import Flask
 
 from email.header import decode_header
 
 
-# app = Flask(__name__)
+app = Flask(__name__)
 
 YANDEX_LOGIN = os.environ.get('YANDEX_LOGIN')
 YANDEX_MAIL = os.environ.get('YANDEX_MAIL')
@@ -110,8 +110,11 @@ def process_mail():
         return "Number of messages: %d" % len(response.items())
 
 
-# @app.route('/')
-# def handler():
+@app.route('/')
+def handler():
+    return "123"
+
 while True:
     process_mail()
     time.sleep(5 * 60)
+
