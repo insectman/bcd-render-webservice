@@ -37,7 +37,8 @@ def process_mail():
 
 
         for dir in ['input', 'output', 'output/archives', 'output/imgs']:
-            os.chmod(dir, 0o777)
+            if os.path.exists(dir):
+                os.chmod(dir, 0o777)
 
         if not os.path.exists('input'):
             os.makedirs('input')
