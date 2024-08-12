@@ -1,6 +1,5 @@
 
 import os
-import time
 import smtplib
 import email
 from email.mime.application import MIMEApplication
@@ -124,7 +123,7 @@ print('1111111111111111111111111111')
 
 # print('222222222222222222222222222222')
 
-while True:
-    process_mail()
-    time.sleep(5 * 60)
+# while True:
+process_mail()
+# time.sleep(5 * 60)
 
