@@ -8,7 +8,6 @@ from imapclient import IMAPClient
 from barcode import EAN13
 from barcode.writer import SVGWriter
 import py7zr
-# from flask import Flask
 
 from email.header import decode_header
 
@@ -18,6 +17,7 @@ from email.header import decode_header
 YANDEX_LOGIN = os.environ.get('YANDEX_LOGIN')
 YANDEX_MAIL = os.environ.get('YANDEX_MAIL')
 YANDEX_PASS = os.environ.get('YANDEX_PASS')
+DIAP_MAIL = os.environ.get('DIAP_MAIL')
 
 def process_mail():
     print('processing mail')
@@ -28,7 +28,7 @@ def process_mail():
         # search criteria are passed in a straightforward way
         # (nesting is supported)
         # messages = client.search(['NOT', 'DELETED'])
-        messages = client.search(['FROM', 'diapazon61@list.ru'])
+        messages = client.search(['FROM', 'DIAP_MAIL'])
         # messages = client.search(['FROM', 'diapazon61@list1.ru'])
 
         # fetch selectors are passed as a simple list of strings.
@@ -104,26 +104,11 @@ def process_mail():
 
             smtp = smtplib.SMTP_SSL('smtp.yandex.com.tr', 465)
             smtp.login(YANDEX_MAIL, YANDEX_PASS)
-            smtp.sendmail(YANDEX_MAIL, YANDEX_MAIL, msg.as_string())
+            smtp.sendmail(YANDEX_MAIL, DIAP_MAIL, msg.as_string())
             smtp.quit()
 
         return "Number of messages: %d" % len(response.items())
 
 
-print('1111111111111111111111111111')
-
-# @app.route('/')
-# def handler():
-#     print('route handler')
-#     return "123"
-
-
-# if __name__ == '__main__':
-#     app.run(host="0.0.0.0", port=10000, debug=True)
-
-# print('222222222222222222222222222222')
-
-# while True:
 process_mail()
-# time.sleep(5 * 60)
 
