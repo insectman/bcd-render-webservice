@@ -119,6 +119,9 @@ def handler():
     return "123"
 
 
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=10000, debug=True)
+
 print('222222222222222222222222222222')
 
 while True:
