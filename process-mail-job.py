@@ -6,7 +6,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from imapclient import IMAPClient
 from barcode import EAN13
-from barcode.writer import SVGWriter
+from barcode.writer import ImageWriter
 import py7zr
 
 from email.header import decode_header
@@ -29,7 +29,7 @@ if not YANDEX_LOGIN:
 print('YANDEX_LOGIN', YANDEX_LOGIN)
 print('YANDEX_MAIL', YANDEX_MAIL)
 print('YANDEX_PASS', YANDEX_PASS)
-print('DIAP_MAIL', DIAP_MAIL)
+print('DIAP_MAIL', '>'+DIAP_MAIL+'<')
 
 def process_mail():
     print('processing mail')
@@ -37,12 +37,7 @@ def process_mail():
         client.login(YANDEX_LOGIN, YANDEX_PASS)
         client.select_folder('INBOX')
 
-        # search criteria are passed in a straightforward way
-        # (nesting is supported)
-        # messages = client.search(['NOT', 'DELETED'])
         messages = client.search(['FROM', DIAP_MAIL])
-        # messages = client.search(['FROM', 'diapazon61@list1.ru'])
-
         # fetch selectors are passed as a simple list of strings.
         response = client.fetch(messages, ['FLAGS', 'RFC822', 'ENVELOPE'])
 
@@ -89,8 +84,8 @@ def process_mail():
                     with open('input/' + filename, 'r') as f:
                         for line in f:
                             line = line.strip()
-                            with open("output/imgs/" + line + ".svg", "wb") as f:
-                                EAN13(str(line), writer=SVGWriter()).write(f)
+                            with open("output/imgs/" + line + ".jpg", "wb") as f:
+                                EAN13(str(line), writer=ImageWriter()).write(f)
                     with py7zr.SevenZipFile('output/archives/' + filename + ".7z", 'w') as archive:
                         archive.writeall("output/imgs/", '')
 
@@ -115,10 +110,13 @@ def process_mail():
 
             smtp = smtplib.SMTP_SSL('smtp.yandex.com.tr', 465)
             smtp.login(YANDEX_MAIL, YANDEX_PASS)
-            smtp.sendmail(YANDEX_MAIL, DIAP_MAIL, msg.as_string())
+            # smtp.sendmail(YANDEX_MAIL, DIAP_MAIL, msg.as_string())
+            print('sendmail:start')
+            smtp.sendmail(YANDEX_MAIL, YANDEX_MAIL, msg.as_string())
+            print('sendmail:done')
             smtp.quit()
 
-        return "Number of messages: %d" % len(response.items())
+        print("Number of messages: %d" % len(response.items()))
 
 
 process_mail()
