@@ -84,6 +84,8 @@ def process_mail():
                     with open('input/' + filename, 'r') as f:
                         for line in f:
                             line = line.strip()
+                            if not line:
+                                continue
                             with open("output/imgs/" + line + ".jpg", "wb") as f:
                                 EAN13(str(line), writer=ImageWriter()).write(f)
                     with py7zr.SevenZipFile('output/archives/' + filename + ".7z", 'w') as archive:
