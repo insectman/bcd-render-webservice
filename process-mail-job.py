@@ -33,8 +33,6 @@ print('DIAP_MAIL', '>'+DIAP_MAIL+'<')
 
 writer=ImageWriter()
 
-print('writer type', type(writer))
-
 def process_mail():
     print('processing mail')
     with IMAPClient(host="imap.ya.ru") as client:
@@ -116,9 +114,8 @@ def process_mail():
 
             smtp = smtplib.SMTP_SSL('smtp.yandex.com.tr', 465)
             smtp.login(YANDEX_MAIL, YANDEX_PASS)
-            # smtp.sendmail(YANDEX_MAIL, DIAP_MAIL, msg.as_string())
             print('sendmail:start')
-            smtp.sendmail(YANDEX_MAIL, YANDEX_MAIL, msg.as_string())
+            smtp.sendmail(YANDEX_MAIL, DIAP_MAIL, msg.as_string())
             print('sendmail:done')
             smtp.quit()
 
