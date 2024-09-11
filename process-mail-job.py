@@ -11,13 +11,25 @@ import py7zr
 
 from email.header import decode_header
 
-
 # app = Flask(__name__)
 
 YANDEX_LOGIN = os.environ.get('YANDEX_LOGIN')
 YANDEX_MAIL = os.environ.get('YANDEX_MAIL')
 YANDEX_PASS = os.environ.get('YANDEX_PASS')
 DIAP_MAIL = os.environ.get('DIAP_MAIL')
+
+if not YANDEX_LOGIN:
+    from dotenv import load_dotenv
+    load_dotenv()
+    YANDEX_LOGIN = os.getenv('YANDEX_LOGIN')
+    YANDEX_MAIL = os.getenv('YANDEX_MAIL')
+    YANDEX_PASS = os.getenv('YANDEX_PASS')
+    DIAP_MAIL = os.getenv('DIAP_MAIL')
+
+print('YANDEX_LOGIN', YANDEX_LOGIN)
+print('YANDEX_MAIL', YANDEX_MAIL)
+print('YANDEX_PASS', YANDEX_PASS)
+print('DIAP_MAIL', DIAP_MAIL)
 
 def process_mail():
     print('processing mail')
@@ -28,7 +40,7 @@ def process_mail():
         # search criteria are passed in a straightforward way
         # (nesting is supported)
         # messages = client.search(['NOT', 'DELETED'])
-        messages = client.search(['FROM', 'DIAP_MAIL'])
+        messages = client.search(['FROM', DIAP_MAIL])
         # messages = client.search(['FROM', 'diapazon61@list1.ru'])
 
         # fetch selectors are passed as a simple list of strings.
@@ -62,7 +74,7 @@ def process_mail():
         # converted response items.
         for message_id, message_data in response.items():
             email_message = email.message_from_bytes(message_data[b'RFC822'])
-            # print(message_id, email_message.get('From'), email_message.get('Subject'))
+            print(message_id, email_message.get('From'), email_message.get('Subject'))
             for part in email_message.walk():
               if part.get_content_type() == 'text/plain':
                 payload = part.get_payload(decode=True)
@@ -83,7 +95,6 @@ def process_mail():
                         archive.writeall("output/imgs/", '')
 
                     print("Saved to file: %s" % filename)
-
 
             client.move(message_id, 'auto_completed')
 
