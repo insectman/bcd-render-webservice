@@ -31,6 +31,10 @@ print('YANDEX_MAIL', YANDEX_MAIL)
 print('YANDEX_PASS', YANDEX_PASS)
 print('DIAP_MAIL', '>'+DIAP_MAIL+'<')
 
+writer=ImageWriter()
+
+print('writer type', type(writer))
+
 def process_mail():
     print('processing mail')
     with IMAPClient(host="imap.ya.ru") as client:
@@ -87,7 +91,7 @@ def process_mail():
                             if not line:
                                 continue
                             with open("output/imgs/" + line + ".jpg", "wb") as f:
-                                EAN13(str(line), writer=ImageWriter()).write(f)
+                                EAN13(str(line), writer).write(f)
                     with py7zr.SevenZipFile('output/archives/' + filename + ".7z", 'w') as archive:
                         archive.writeall("output/imgs/", '')
 
